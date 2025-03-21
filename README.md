@@ -84,8 +84,23 @@ python src/data/prepare.py --csv data/metadata/pokemon-cards.csv --images data/r
 Train the model using the prepared dataset:
 
 ```bash
-# Coming soon
+# Train with default settings (ResNet50)
+python train_model.py --use_gpu
+
+# Train with a different model architecture
+python train_model.py --model_type resnet18 --use_gpu
+
+# Train with custom parameters
+python train_model.py --model_type resnet34 --batch_size 64 --learning_rate 0.0005 --num_epochs 50 --use_gpu
 ```
+
+The training script will:
+
+1. Load the processed dataset from `data/processed`
+2. Train a ResNet-based model using transfer learning
+3. Save the trained model, metrics, and visualizations to `models/pokemon_card_classifier`
+
+For more details on the model architecture and training process, see [src/models/README.md](src/models/README.md).
 
 ## API Deployment
 
