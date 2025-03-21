@@ -6,12 +6,12 @@ Test the download functionality with a small number of images.
 """
 
 import os
-import sys
 import argparse
+import sys
 
-# Add the parent directory to the path so we can import the download module
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from data.download import download_all_images
+# Add the project root to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from src.data.download import download_all_images
 
 def main():
     parser = argparse.ArgumentParser(description='Test downloading a small number of Pokémon card images')

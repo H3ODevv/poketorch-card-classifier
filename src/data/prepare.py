@@ -13,6 +13,21 @@ from tqdm import tqdm
 from collections import Counter
 import random
 import matplotlib.pyplot as plt
+import re
+
+def sanitize_filename(name):
+    """
+    Sanitize a string to be used as a directory name.
+    Replaces invalid characters with underscores.
+    
+    Args:
+        name: The string to sanitize
+        
+    Returns:
+        A sanitized string that can be used as a directory name
+    """
+    # Replace characters that are not allowed in directory names
+    return re.sub(r'[\\/*?:"<>|]', '_', name)
 
 def prepare_dataset(csv_path, images_dir, output_dir, min_images=20, train_ratio=0.8, seed=42):
     """
@@ -50,14 +65,23 @@ def prepare_dataset(csv_path, images_dir, output_dir, min_images=20, train_ratio
     os.makedirs(val_dir, exist_ok=True)
     
     # Create directories for each Pokémon
+    pokemon_dir_map = {}  # Map from original name to sanitized directory name
     for pokemon in valid_pokemon:
-        os.makedirs(os.path.join(train_dir, pokemon), exist_ok=True)
-        os.makedirs(os.path.join(val_dir, pokemon), exist_ok=True)
+        # Sanitize the Pokémon name for use as a directory name
+        sanitized_name = sanitize_filename(pokemon)
+        pokemon_dir_map[pokemon] = sanitized_name
+        
+        # Create directories
+        os.makedirs(os.path.join(train_dir, sanitized_name), exist_ok=True)
+        os.makedirs(os.path.join(val_dir, sanitized_name), exist_ok=True)
     
     # Process each Pokémon
     stats = {'pokemon': [], 'train': [], 'val': []}
     
     for pokemon in tqdm(valid_pokemon, desc="Processing Pokémon"):
+        # Get the sanitized directory name
+        dir_name = pokemon_dir_map[pokemon]
+        
         # Get all cards for this Pokémon
         pokemon_df = df[df['name'] == pokemon]
         
@@ -75,19 +99,19 @@ def prepare_dataset(csv_path, images_dir, output_dir, min_images=20, train_ratio
         # Copy images to the appropriate directories
         for image_id in train_ids:
             src = os.path.join(images_dir, f"{image_id}.jpg")
-            dst = os.path.join(train_dir, pokemon, f"{image_id}.jpg")
+            dst = os.path.join(train_dir, dir_name, f"{image_id}.jpg")
             if os.path.exists(src):
                 shutil.copy(src, dst)
         
         for image_id in val_ids:
             src = os.path.join(images_dir, f"{image_id}.jpg")
-            dst = os.path.join(val_dir, pokemon, f"{image_id}.jpg")
+            dst = os.path.join(val_dir, dir_name, f"{image_id}.jpg")
             if os.path.exists(src):
                 shutil.copy(src, dst)
         
         # Count the actual number of images copied
-        train_count = len([f for f in os.listdir(os.path.join(train_dir, pokemon)) if f.endswith('.jpg')])
-        val_count = len([f for f in os.listdir(os.path.join(val_dir, pokemon)) if f.endswith('.jpg')])
+        train_count = len([f for f in os.listdir(os.path.join(train_dir, dir_name)) if f.endswith('.jpg')])
+        val_count = len([f for f in os.listdir(os.path.join(val_dir, dir_name)) if f.endswith('.jpg')])
         
         # Add to statistics
         stats['pokemon'].append(pokemon)
@@ -117,6 +141,12 @@ def prepare_dataset(csv_path, images_dir, output_dir, min_images=20, train_ratio
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'dataset_distribution.png'))
+    
+    # Save the mapping from original names to directory names
+    with open(os.path.join(output_dir, 'pokemon_name_mapping.csv'), 'w', encoding='utf-8') as f:
+        f.write('original_name,directory_name\n')
+        for pokemon, dir_name in pokemon_dir_map.items():
+            f.write(f'"{pokemon}","{dir_name}"\n')
     
     return stats_df
 
