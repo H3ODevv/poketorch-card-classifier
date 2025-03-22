@@ -1,120 +1,169 @@
-# PokéTorch: Pokémon Card Classifier
+# PokéTorch Card Classifier
 
-A PyTorch-based image classifier for Pokémon cards using transfer learning.
+A deep learning-based Pokémon card classifier built with PyTorch. This project allows you to identify Pokémon characters from card images using a trained convolutional neural network.
 
-## Project Overview
+## Features
 
-PokéTorch is a one-day project that demonstrates:
-
-1. **Image Classification** with **PyTorch** and **Transfer Learning**
-2. **End-to-End** ML workflow: data gathering, training, inference, and serving predictions via **FastAPI**
-3. A bit of **fun** using _Pokémon card images_ as our classification target
+- **Data Processing**: Scripts for downloading and preparing Pokémon card images
+- **Model Training**: Training scripts for both basic and improved models
+- **API**: FastAPI-based REST API for serving predictions
+- **Web Interface**: User-friendly web interface for uploading and classifying images
+- **Transfer Learning**: Utilizes pre-trained models (ResNet, EfficientNet, ConvNeXt) for better performance
+- **Class Balancing**: Handles imbalanced datasets with weighted sampling and focal loss
 
 ## Project Structure
 
 ```
 poketorch-card-classifier/
-├── data/
-│   ├── raw/                  # Downloaded card images
-│   ├── processed/            # Organized train/val splits
-│   └── metadata/             # CSV and other metadata
-├── src/
-│   ├── data/
-│   │   ├── download.py       # Image downloading script
-│   │   ├── prepare.py        # Dataset preparation
-│   │   └── test_download.py  # Test script for downloading
-│   ├── models/
-│   │   ├── model.py          # Model architecture
-│   │   └── train.py          # Training script
-│   └── api/
-│       ├── app.py            # FastAPI application
-│       └── utils.py          # API utilities
-├── notebooks/                # Exploratory analysis
-├── models/                   # Saved model checkpoints
-├── static/                   # Web interface assets
-├── requirements.txt          # Dependencies
-└── README.md                 # Project documentation
+├── data/                      # Data directory
+│   ├── raw/                   # Raw downloaded images
+│   ├── processed/             # Processed images for training
+│   └── metadata/              # Metadata files
+├── models/                    # Trained models
+│   ├── pokemon_card_classifier/       # Basic model
+│   └── improved_pokemon_card_classifier/ # Improved model
+├── notebooks/                 # Jupyter notebooks for exploration
+├── src/                       # Source code
+│   ├── api/                   # API code
+│   ├── data/                  # Data processing code
+│   └── models/                # Model definitions and training code
+├── static/                    # Web interface static files
+│   ├── css/                   # CSS styles
+│   ├── js/                    # JavaScript code
+│   └── examples/              # Example images
+├── prepare_dataset.py         # Script to prepare the dataset
+├── train_model.py             # Script to train the basic model
+├── train_improved_model.py    # Script to train the improved model
+├── run_api.py                 # Script to run the API
+└── requirements.txt           # Python dependencies
 ```
 
-## Setup and Installation
+## Installation
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/poketorch-card-classifier.git
-cd poketorch-card-classifier
-```
+   ```bash
+   git clone https://github.com/yourusername/poketorch-card-classifier.git
+   cd poketorch-card-classifier
+   ```
 
 2. Create a virtual environment and install dependencies:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
+## Data Preparation
 
-## Data Processing
+1. Download the Pokémon card dataset:
 
-### 1. Test Download
+   ```bash
+   python src/data/download.py
+   ```
 
-Before downloading all images, you can test the download functionality with a small number of images:
-
-```bash
-python src/data/test_download.py --csv data/metadata/pokemon-cards.csv --count 10
-```
-
-### 2. Download Images
-
-Download all Pokémon card images from the dataset:
-
-```bash
-python src/data/download.py --csv data/metadata/pokemon-cards.csv --output data/raw
-```
-
-### 3. Prepare Dataset
-
-Organize the downloaded images by Pokémon name and create train/validation splits:
-
-```bash
-python src/data/prepare.py --csv data/metadata/pokemon-cards.csv --images data/raw --output data/processed
-```
+2. Prepare the dataset for training:
+   ```bash
+   python prepare_dataset.py
+   ```
 
 ## Model Training
 
-Train the model using the prepared dataset:
+### Basic Model
+
+Train the basic model with ResNet backbone:
 
 ```bash
-# Train with default settings (ResNet50)
-python train_model.py --use_gpu
-
-# Train with a different model architecture
-python train_model.py --model_type resnet18 --use_gpu
-
-# Train with custom parameters
-python train_model.py --model_type resnet34 --batch_size 64 --learning_rate 0.0005 --num_epochs 50 --use_gpu
+python train_model.py --model_type resnet50 --num_epochs 30
 ```
 
-The training script will:
+### Improved Model
 
-1. Load the processed dataset from `data/processed`
-2. Train a ResNet-based model using transfer learning
-3. Save the trained model, metrics, and visualizations to `models/pokemon_card_classifier`
-
-For more details on the model architecture and training process, see [src/models/README.md](src/models/README.md).
-
-## API Deployment
-
-Run the FastAPI server to serve predictions:
+Train the improved model with EfficientNet backbone and focal loss:
 
 ```bash
-# Coming soon
+python train_improved_model.py --model_type efficientnet_b0 --use_focal_loss --num_epochs 50
 ```
+
+Available model types:
+
+- `resnet18`, `resnet34`, `resnet50`, `resnet101`
+- `efficientnet_b0`, `efficientnet_b3`
+- `convnext_tiny`
+
+## Running the API
+
+Start the FastAPI server:
+
+```bash
+python run_api.py
+```
+
+The API will be available at http://localhost:8000
+
+### API Endpoints
+
+- `GET /health`: Health check endpoint
+- `GET /info`: Get model information
+- `GET /classes`: Get class names
+- `POST /predict`: Predict Pokémon from an image
+- `POST /predict/batch`: Predict Pokémon from multiple images
+- `POST /reload`: Reload the model
+
+## Web Interface
+
+The web interface is served by the API server at http://localhost:8000
+
+Features:
+
+- Drag and drop image upload
+- Real-time predictions
+- Top 5 prediction results
+- Example images for testing
+
+## Model Architecture
+
+### Basic Model
+
+The basic model uses ResNet as the backbone with a simple classifier head:
+
+```
+ResNet → Dropout(0.5) → Linear(2048, 512) → ReLU → Dropout(0.3) → Linear(512, num_classes)
+```
+
+### Improved Model
+
+The improved model supports multiple backbone architectures with an enhanced classifier head:
+
+```
+Backbone → Dropout(0.5) → Linear → BatchNorm → ReLU → Dropout(0.3) → Linear → BatchNorm → ReLU → Dropout(0.2) → Linear
+```
+
+## Performance Considerations
+
+For best performance:
+
+1. Use the improved training script with:
+
+   - EfficientNet-B0 or ConvNeXt Tiny for a good balance of accuracy and speed
+   - Focal Loss for handling class imbalance
+   - Cosine Annealing scheduler for better convergence
+
+2. Train with GPU acceleration:
+   ```bash
+   python train_improved_model.py --model_type efficientnet_b0 --use_focal_loss --use_gpu
+   ```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
-- Dataset source: [Pokémon Cards Dataset on Kaggle](https://www.kaggle.com/datasets/priyamchoksi/pokemon-cards)
-- Inspired by the Pokémon Trading Card Game
+- The Pokémon card dataset
+- PyTorch and torchvision for the deep learning framework
+- FastAPI for the API framework
