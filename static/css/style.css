@@ -1,33 +1,50 @@
 /* Base Styles */
 :root {
-    /* Main Colors */
+    /* Light Theme Colors (Default) */
+    --primary-color: #ee1515;
+    --secondary-color: #3b4cca;
+    --accent-color: #ffde00;
+    --background-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --surface-color-light: #f0f0f0;
+    --surface-color-lighter: #e8e8e8;
+    --card-background: var(--surface-color);
+    --text-color-primary: #333333;
+    --text-color-secondary: #555555;
+    --text-color-tertiary: #777777;
+    --border-color: #dddddd;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-strong: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Theme Colors */
+[data-theme="dark"] {
     --primary-color: #ff3d4d;
     --secondary-color: #4d5bff;
     --accent-color: #ffd60a;
-    
-    /* Surface Colors */
     --background-color: #121212;
     --surface-color: #1e1e1e;
     --surface-color-light: #2d2d2d;
     --surface-color-lighter: #333333;
     --card-background: var(--surface-color);
-    
-    /* Text Colors */
     --text-color-primary: #ffffff;
     --text-color-secondary: #b3b3b3;
     --text-color-tertiary: #8a8a8a;
-    
-    /* UI Colors */
     --border-color: #333333;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-strong: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+:root {
+    /* UI Colors (Same for both themes) */
     --success-color: #4caf50;
     --error-color: #f44336;
     --warning-color: #ff9800;
     --info-color: #2196f3;
     
     /* Effects */
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.2);
-    --shadow-strong: 0 8px 16px rgba(0, 0, 0, 0.4);
     --border-radius: 8px;
     --border-radius-lg: 12px;
     --border-radius-sm: 4px;
@@ -36,6 +53,32 @@
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--surface-color-light);
+    border: 2px solid var(--border-color);
+    color: var(--text-color-primary);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow);
+    z-index: 100;
+}
+
+.theme-toggle:hover {
+    transform: rotate(30deg);
+    background-color: var(--surface-color-lighter);
 }
 
 * {
