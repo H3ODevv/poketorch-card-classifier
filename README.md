@@ -184,22 +184,6 @@ The improved model supports multiple backbone architectures with an enhanced cla
 Backbone → Dropout(0.5) → Linear → BatchNorm → ReLU → Dropout(0.3) → Linear → BatchNorm → ReLU → Dropout(0.2) → Linear
 ```
 
-## Screenshots
-
-The application includes a modern, responsive UI with both light and dark themes:
-
-### Light Theme
-
-(Screenshots would be included here)
-
-### Dark Theme
-
-(Screenshots would be included here)
-
-### Classification Results
-
-(Screenshots would be included here)
-
 ## Troubleshooting
 
 ### UI Changes Not Showing
