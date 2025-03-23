@@ -2,6 +2,16 @@
 
 This directory contains scripts for downloading and preparing the Pokémon card dataset for training.
 
+## Dataset Source
+
+The Pokémon card dataset used in this project is from Kaggle:
+
+- **Name**: Pokemon Cards
+- **Author**: Priyam Choksi
+- **URL**: [https://www.kaggle.com/datasets/priyamchoksi/pokemon-cards](https://www.kaggle.com/datasets/priyamchoksi/pokemon-cards)
+
+Please cite the dataset appropriately if you use it in your work (see the main README.md for citation format).
+
 ## Test Download Script
 
 The `test_download.py` script allows you to test the download functionality with a small number of images before downloading the entire dataset.
