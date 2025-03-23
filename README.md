@@ -2,6 +2,33 @@
 
 A deep learning-based Pokémon card classifier built with PyTorch. This project allows you to identify Pokémon characters from card images using a trained convolutional neural network.
 
+## Quick Start (Pre-trained Model)
+
+To quickly run the application with our pre-trained model:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/poketorch-card-classifier.git
+   cd poketorch-card-classifier
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. Run the application:
+
+   ```bash
+   python run_api.py
+   ```
+
+4. Open your browser and navigate to http://localhost:8000
+
 ## Features
 
 - **Data Processing**: Scripts for downloading and preparing Pokémon card images
@@ -110,20 +137,38 @@ The API will be available at http://localhost:8000
 - `POST /predict/batch`: Predict Pokémon from multiple images
 - `POST /reload`: Reload the model
 
-## Web Interface
+## Web Interface Features
 
 The web interface is served by the API server at http://localhost:8000
 
 Features:
 
-- Drag and drop image upload
-- Real-time predictions
-- Top 5 prediction results
-- Example images for testing
+- **Dark/Light Theme**: Toggle between dark and light modes with automatic system preference detection
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **Neumorphic UI**: Modern card and button components with subtle shadows and effects
+- **Drag & Drop Upload**: Easily upload card images by dragging and dropping
+- **Real-time Predictions**: Get instant predictions with confidence scores
+- **Top 5 Predictions**: View the top 5 most likely Pokémon matches
+- **Example Cards**: Test the classifier with provided example cards
+- **Animations**: Subtle micro-interactions and feedback animations
+- **Accessibility**: Full keyboard navigation, screen reader support, and high contrast focus states
+- **Keyboard Shortcuts**: Ctrl+U to upload, Ctrl+C to classify, Esc to clear
 
-## Model Architecture
+## Model Performance
 
-### Basic Model
+The project includes two pre-trained models:
+
+- **Basic Model**: Located in `models/pokemon_card_classifier/`
+  - Architecture: ResNet50 with a simple classifier head
+  - Accuracy: ~2%
+- **Improved Model**: Located in `models/improved_pokemon_card_classifier/`
+  - Architecture: EfficientNet-B0 with an enhanced classifier head
+  - Accuracy: ~72%
+  - Used by default if available
+
+### Model Architecture
+
+#### Basic Model
 
 The basic model uses ResNet as the backbone with a simple classifier head:
 
@@ -131,13 +176,47 @@ The basic model uses ResNet as the backbone with a simple classifier head:
 ResNet → Dropout(0.5) → Linear(2048, 512) → ReLU → Dropout(0.3) → Linear(512, num_classes)
 ```
 
-### Improved Model
+#### Improved Model
 
 The improved model supports multiple backbone architectures with an enhanced classifier head:
 
 ```
 Backbone → Dropout(0.5) → Linear → BatchNorm → ReLU → Dropout(0.3) → Linear → BatchNorm → ReLU → Dropout(0.2) → Linear
 ```
+
+## Screenshots
+
+The application includes a modern, responsive UI with both light and dark themes:
+
+### Light Theme
+
+(Screenshots would be included here)
+
+### Dark Theme
+
+(Screenshots would be included here)
+
+### Classification Results
+
+(Screenshots would be included here)
+
+## Troubleshooting
+
+### UI Changes Not Showing
+
+If you've made changes to the UI files but don't see them in the browser:
+
+- Clear your browser cache or do a hard refresh (Ctrl+F5 or Cmd+Shift+R)
+- Try opening the site in an incognito/private window
+- Check the server logs to ensure files are being served correctly
+
+### Model Loading Issues
+
+If you encounter issues with model loading:
+
+- Ensure the model files are in the correct directory
+- Check the console for specific error messages
+- Try using the `--model-dir` flag to specify the model location explicitly
 
 ## Performance Considerations
 
