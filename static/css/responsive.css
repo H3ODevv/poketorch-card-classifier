@@ -1,0 +1,230 @@
+/**
+ * Responsive styles for PokéTorch Card Classifier
+ * Implements mobile-first approach for all components
+ */
+
+/* Base Mobile Styles (up to 576px) */
+/* These are already defined in the main CSS file */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    header p {
+        font-size: var(--font-size-md);
+    }
+    
+    #drop-area {
+        min-height: 250px;
+    }
+    
+    .examples-container {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    
+    header {
+        margin-bottom: 30px;
+    }
+    
+    header h1 {
+        font-size: var(--font-size-3xl);
+    }
+    
+    main {
+        gap: 30px;
+    }
+    
+    section {
+        padding: 25px;
+    }
+    
+    #drop-area {
+        min-height: 300px;
+    }
+    
+    .upload-icon {
+        font-size: 3.5rem;
+    }
+    
+    .examples-container {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    
+    .result-header {
+        flex-direction: row;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    header {
+        margin-bottom: 40px;
+    }
+    
+    main {
+        gap: 40px;
+    }
+    
+    section {
+        padding: 30px;
+        border-radius: var(--border-radius-lg);
+    }
+    
+    /* Two-column layout for larger screens */
+    .examples-section {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas: 
+            "heading examples";
+        align-items: start;
+        gap: 30px;
+    }
+    
+    .examples-section h2 {
+        grid-area: heading;
+        border-bottom: none;
+        border-right: 2px solid var(--border-color);
+        padding-right: 20px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    
+    .examples-container {
+        grid-area: examples;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+    
+    /* Enhanced layout for extra large screens */
+    main {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas:
+            "upload examples"
+            "results examples";
+        gap: 30px;
+    }
+    
+    .upload-section {
+        grid-area: upload;
+    }
+    
+    #result-section {
+        grid-area: results;
+    }
+    
+    .examples-section {
+        grid-area: examples;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "heading"
+            "examples";
+    }
+    
+    .examples-section h2 {
+        border-right: none;
+        border-bottom: 2px solid var(--border-color);
+        padding-right: 0;
+        justify-content: flex-start;
+    }
+    
+    .examples-container {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Sticky header for large screens */
+    header {
+        position: sticky;
+        top: 0;
+        background-color: var(--background-color);
+        z-index: 10;
+        padding: 15px 0;
+        transition: padding var(--transition-normal), box-shadow var(--transition-normal);
+    }
+    
+    /* Add scroll behavior */
+    .header-scrolled {
+        padding: 10px 0;
+        box-shadow: var(--shadow);
+    }
+    
+    .header-scrolled h1 {
+        font-size: var(--font-size-xl);
+    }
+    
+    .header-scrolled p {
+        display: none;
+    }
+}
+
+/* Dark mode adjustments for different screen sizes */
+@media (prefers-color-scheme: dark) {
+    /* Adjust shadows for dark mode on different devices */
+    @media (max-width: 768px) {
+        .card {
+            box-shadow: var(--shadow-light);
+        }
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background-color: white;
+        color: black;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    header, footer, .upload-section, .examples-section {
+        display: none;
+    }
+    
+    #result-section {
+        display: block !important;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .result-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}

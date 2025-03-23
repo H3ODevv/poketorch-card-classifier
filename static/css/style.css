@@ -1,16 +1,84 @@
 /* Base Styles */
 :root {
+    /* Light Theme Colors (Default) */
     --primary-color: #ee1515;
     --secondary-color: #3b4cca;
     --accent-color: #ffde00;
     --background-color: #f8f9fa;
-    --card-background: #ffffff;
-    --text-color: #333333;
+    --surface-color: #ffffff;
+    --surface-color-light: #f0f0f0;
+    --surface-color-lighter: #e8e8e8;
+    --card-background: var(--surface-color);
+    --text-color-primary: #333333;
+    --text-color-secondary: #555555;
+    --text-color-tertiary: #777777;
     --border-color: #dddddd;
-    --success-color: #28a745;
-    --error-color: #dc3545;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-strong: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Theme Colors */
+[data-theme="dark"] {
+    --primary-color: #ff3d4d;
+    --secondary-color: #4d5bff;
+    --accent-color: #ffd60a;
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --surface-color-light: #2d2d2d;
+    --surface-color-lighter: #333333;
+    --card-background: var(--surface-color);
+    --text-color-primary: #ffffff;
+    --text-color-secondary: #b3b3b3;
+    --text-color-tertiary: #8a8a8a;
+    --border-color: #333333;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-strong: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+:root {
+    /* UI Colors (Same for both themes) */
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --warning-color: #ff9800;
+    --info-color: #2196f3;
+    
+    /* Effects */
     --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-sm: 4px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--surface-color-light);
+    border: 2px solid var(--border-color);
+    color: var(--text-color-primary);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow);
+    z-index: 100;
+}
+
+.theme-toggle:hover {
+    transform: rotate(30deg);
+    background-color: var(--surface-color-lighter);
 }
 
 * {
@@ -20,10 +88,9 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
+    color: var(--text-color-primary);
     background-color: var(--background-color);
+    transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 .container {
@@ -47,7 +114,7 @@ header h1 {
 }
 
 header p {
-    color: var(--text-color);
+    color: var(--text-color-secondary);
     font-size: 1.2rem;
 }
 
@@ -86,14 +153,16 @@ section h2 {
     max-width: 600px;
     min-height: 300px;
     border: 3px dashed var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal);
     position: relative;
+    background-color: var(--surface-color-light);
+    box-shadow: var(--shadow-light);
 }
 
 #drop-area.highlight {
@@ -122,8 +191,14 @@ section h2 {
 
 .upload-icon {
     font-size: 4rem;
-    color: var(--border-color);
+    color: var(--secondary-color);
     margin-bottom: 20px;
+    transition: transform var(--transition-normal), color var(--transition-normal);
+}
+
+.file-label:hover .upload-icon {
+    transform: scale(1.1);
+    color: var(--accent-color);
 }
 
 .upload-text {
@@ -170,7 +245,9 @@ section h2 {
 }
 
 .primary-btn:hover {
-    background-color: #d10000;
+    background-color: #e02e3d;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
 }
 
 .primary-btn:disabled {
@@ -184,7 +261,9 @@ section h2 {
 }
 
 #clear-btn:hover {
-    background-color: #bd2130;
+    background-color: #e53935;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
 }
 
 /* Result Section Styles */
@@ -197,8 +276,11 @@ section h2 {
     width: 100%;
     max-width: 600px;
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg);
     overflow: hidden;
+    background-color: var(--surface-color-light);
+    box-shadow: var(--shadow-strong);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .result-header {
@@ -217,9 +299,10 @@ section h2 {
 #confidence {
     font-size: 1rem;
     background-color: var(--accent-color);
-    color: var(--text-color);
+    color: #000000;
     padding: 5px 10px;
     border-radius: 20px;
+    font-weight: bold;
 }
 
 .result-body {
@@ -248,9 +331,11 @@ section h2 {
 
 .prediction-bar {
     height: 10px;
-    background-color: var(--accent-color);
+    background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
     border-radius: 5px;
     margin-top: 5px;
+    transition: width var(--transition-normal);
+    box-shadow: var(--shadow-light);
 }
 
 /* Examples Section Styles */
@@ -272,8 +357,9 @@ section h2 {
 }
 
 .example-card:hover {
-    background-color: rgba(59, 76, 202, 0.1);
+    background-color: var(--surface-color-light);
     transform: translateY(-5px);
+    box-shadow: var(--shadow-strong);
 }
 
 .example-card img {
@@ -305,7 +391,7 @@ footer {
     justify-content: center;
     gap: 20px;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-color-tertiary);
 }
 
 /* Loading Overlay */

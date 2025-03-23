@@ -1,0 +1,229 @@
+/**
+ * Component styles for PokéTorch Card Classifier
+ * Implements neumorphic design for UI elements
+ */
+
+/* Card Component */
+.card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+    position: relative;
+}
+
+/* Neumorphic Card Variants */
+.card-flat {
+    box-shadow: var(--shadow);
+}
+
+.card-raised {
+    box-shadow: var(--shadow-strong);
+}
+
+.card-inset {
+    background-color: var(--surface-color-light);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 
+                inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+/* Card Hover Effects */
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-strong);
+}
+
+/* Card Header */
+.card-header {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--surface-color-light);
+}
+
+/* Card Body */
+.card-body {
+    padding: 20px;
+}
+
+/* Card Footer */
+.card-footer {
+    padding: 15px;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface-color-light);
+}
+
+/* Button Component */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Neumorphic Button Variants */
+.btn-flat {
+    background-color: var(--surface-color);
+    color: var(--text-color-primary);
+    box-shadow: var(--shadow);
+}
+
+.btn-flat:hover {
+    box-shadow: var(--shadow-strong);
+}
+
+.btn-raised {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--shadow);
+}
+
+.btn-raised:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+}
+
+.btn-inset {
+    background-color: var(--surface-color-light);
+    color: var(--text-color-primary);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 
+                inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+.btn-inset:active {
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.3), 
+                inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+}
+
+/* Button Colors */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-accent {
+    background-color: var(--accent-color);
+    color: black;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-error {
+    background-color: var(--error-color);
+    color: white;
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: var(--font-size-sm);
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: var(--font-size-lg);
+}
+
+/* Button with Icon */
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-icon-only {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* Input Component */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--surface-color-light);
+    color: var(--text-color-primary);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-normal);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(77, 91, 255, 0.2);
+}
+
+/* Neumorphic Input */
+.input-neumorphic {
+    border: none;
+    background-color: var(--surface-color);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 
+                inset -2px -2px 5px rgba(255, 255, 255, 0.05);
+}
+
+.input-neumorphic:focus {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 
+                inset -2px -2px 5px rgba(255, 255, 255, 0.05),
+                0 0 0 2px rgba(77, 91, 255, 0.2);
+}
+
+/* Badge Component */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+
+.badge-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.badge-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.badge-accent {
+    background-color: var(--accent-color);
+    color: black;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 15px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+    }
+}
