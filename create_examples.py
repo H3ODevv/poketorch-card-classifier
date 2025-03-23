@@ -3,6 +3,7 @@
 
 """
 Script to create example images for the web interface.
+Creates placeholder images for Alakazam, Blastoise, and Chansey if they don't exist.
 """
 
 import os
@@ -14,28 +15,33 @@ os.makedirs('static/examples', exist_ok=True)
 # Define the example images
 examples = [
     {
-        'name': 'pikachu',
-        'color': (255, 255, 0),  # Yellow
+        'name': 'alakazam',
+        'color': (255, 215, 0),  # Gold
         'text_color': (0, 0, 0),  # Black
-        'path': 'static/examples/pikachu.jpg'
+        'path': 'static/examples/alakazam.jpg'
     },
     {
-        'name': 'charizard',
-        'color': (255, 102, 0),  # Orange
+        'name': 'blastoise',
+        'color': (0, 102, 204),  # Blue
         'text_color': (255, 255, 255),  # White
-        'path': 'static/examples/charizard.jpg'
+        'path': 'static/examples/blastoise.jpg'
     },
     {
-        'name': 'eevee',
-        'color': (204, 153, 102),  # Brown
-        'text_color': (255, 255, 255),  # White
-        'path': 'static/examples/eevee.jpg'
+        'name': 'chansey',
+        'color': (255, 182, 193),  # Pink
+        'text_color': (0, 0, 0),  # Black
+        'path': 'static/examples/chansey.jpg'
     }
 ]
 
-# Create and save the example images
+# Create placeholder images if they don't already exist
 for example in examples:
-    print(f"Creating {example['name']} image...")
+    print(f"Processing {example['name']} image...")
+    
+    # Skip if the file already exists
+    if os.path.exists(example['path']):
+        print(f"Image for {example['name']} already exists, skipping...")
+        continue
     
     try:
         # Create a new image
@@ -59,7 +65,7 @@ for example in examples:
         # Save the image
         image.save(example['path'])
         
-        print(f"Saved {example['path']}")
+        print(f"Created placeholder for {example['name']}")
     except Exception as e:
         print(f"Error creating {example['name']} image: {e}")
 
