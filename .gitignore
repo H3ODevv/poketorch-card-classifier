@@ -25,10 +25,12 @@ venv/
 env/
 ENV/
 
-# PyTorch
+# PyTorch - exclude most model files but allow our specific ones
 *.pth
 *.pt
 *.bin
+!models/pokemon_card_classifier/pokemon_card_classifier.pth
+!models/improved_pokemon_card_classifier/pokemon_card_classifier.pth
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -59,6 +61,4 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Project specific
-models/*.pth
-models/*.pt
+# Project specific - exclude other model files
