@@ -1,140 +1,148 @@
-# Pokémon Card Classifier Model
+# PokéTorch Model Architecture and Training
 
-This directory contains the model architecture, training, and utility scripts for the Pokémon card classifier.
+This directory contains the model architecture and training scripts for the PokéTorch Pokémon card classifier.
 
 ## Model Architecture
 
-The model architecture is defined in `model.py`. It uses transfer learning with a ResNet backbone (ResNet18, ResNet34, ResNet50, or ResNet101) and a custom classification head.
+The PokéTorch classifier uses transfer learning with pre-trained models to classify Pokémon cards. Two main model architectures are available:
 
-### Key Components
+### Basic Model (PokemonCardClassifier)
 
-- `PokemonCardClassifier`: The main model class that uses a ResNet backbone with a custom classification head
-- `save_model`: Function to save the model and class names
-- `load_model`: Function to load the model and class names
-- `predict_image`: Function to predict the class of an image
-- `DeviceDataLoader`: Wrapper for DataLoader to move data to the device (CPU or GPU)
+The basic model uses ResNet as the backbone with a simple classifier head:
 
-## Training
-
-The training script is defined in `train.py`. It handles loading the dataset, training the model, and evaluating its performance.
-
-### Key Components
-
-- `get_transforms`: Function to get the transforms for training and validation
-- `load_data`: Function to load the dataset
-- `train_epoch`: Function to train the model for one epoch
-- `validate`: Function to validate the model
-- `train`: Function to train the model for multiple epochs with early stopping
-- `plot_metrics`: Function to plot the training and validation metrics
-- `plot_confusion_matrix`: Function to plot the confusion matrix
-
-## Utilities
-
-The utility functions are defined in `utils.py`. They provide additional functionality for model evaluation and visualization.
-
-### Key Components
-
-- `evaluate_model`: Function to evaluate the model on a dataset
-- `visualize_predictions`: Function to visualize model predictions on a few samples
-- `predict_image_from_path`: Function to predict the class of an image from a file path
-- `predict_image_from_array`: Function to predict the class of an image from a numpy array
-- `batch_predict`: Function to predict the classes of multiple images
-- `export_model_info`: Function to export model information to a JSON file
-- `create_model_summary`: Function to create a summary of the model
-
-## Usage
-
-### Training the Model
-
-To train the model, use the `train_model.py` script at the project root:
-
-```bash
-python train_model.py --data_dir data/processed --model_type resnet50 --batch_size 32 --num_epochs 30
+```
+ResNet (18/34/50/101) → Dropout(0.5) → Linear(2048, 512) → ReLU → Dropout(0.3) → Linear(512, num_classes)
 ```
 
-#### Arguments
+This model is defined in `model.py` and is trained using the script in `train.py`.
 
-- `--data_dir`: Directory containing the dataset (default: 'data/processed')
-- `--model_type`: Type of ResNet model to use (choices: 'resnet18', 'resnet34', 'resnet50', 'resnet101', default: 'resnet50')
-- `--save_dir`: Directory to save the model (default: 'models/pokemon_card_classifier')
-- `--batch_size`: Batch size for training and validation (default: 32)
-- `--img_size`: Size of the input images (default: 224)
-- `--num_epochs`: Number of epochs to train for (default: 30)
-- `--learning_rate`: Learning rate (default: 0.001)
-- `--weight_decay`: Weight decay (default: 0.0001)
-- `--patience`: Patience for early stopping (default: 5)
-- `--num_workers`: Number of workers for data loading (default: 4)
-- `--use_gpu`: Use GPU for training if available (flag)
+### Improved Model (ImprovedPokemonCardClassifier)
 
-### Using the Trained Model
+The improved model supports multiple backbone architectures with an enhanced classifier head:
 
-To use the trained model for prediction, you can use the utility functions in `utils.py`:
+```
+Backbone (ResNet/EfficientNet/ConvNeXt) → Dropout(0.5) → Linear → BatchNorm → ReLU → Dropout(0.3) → Linear → BatchNorm → ReLU → Dropout(0.2) → Linear
+```
+
+This model is defined in `improved_train.py` and includes several improvements:
+
+1. Support for modern architectures:
+
+   - ResNet (18/34/50/101)
+   - EfficientNet (B0/B3)
+   - ConvNeXt Tiny
+
+2. Enhanced classifier head with batch normalization for better training stability
+
+## Training Process
+
+### Basic Training
+
+The basic training process is implemented in `train.py` and includes:
+
+1. Data loading with basic augmentation:
+
+   - Resize to 224x224
+   - Random horizontal flip
+   - Random rotation (±10°)
+   - Color jitter (brightness, contrast, saturation)
+
+2. Training with:
+   - Cross-entropy loss
+   - Adam optimizer
+   - ReduceLROnPlateau learning rate scheduler
+   - Early stopping
+
+### Improved Training
+
+The improved training process in `improved_train.py` includes several enhancements:
+
+1. Enhanced data augmentation:
+
+   - Resize to 224x224
+   - Random horizontal flip
+   - Random rotation (±30°)
+   - Random affine transformations (shear, scale)
+   - Enhanced color jitter (brightness, contrast, saturation, hue)
+   - Random perspective changes
+
+2. Class balancing techniques:
+
+   - Weighted random sampling to balance class frequencies
+   - Class weights in loss function
+
+3. Advanced training techniques:
+   - Focal Loss for handling hard examples and class imbalance
+   - AdamW optimizer with weight decay for better regularization
+   - Cosine Annealing with Warm Restarts for learning rate scheduling
+   - Enhanced early stopping
+
+## Model Evaluation
+
+Both training scripts include comprehensive evaluation:
+
+1. Training and validation metrics:
+
+   - Loss
+   - Accuracy
+
+2. Visualization:
+
+   - Loss curves
+   - Accuracy curves
+   - Confusion matrix
+
+3. Classification report:
+   - Per-class precision, recall, and F1-score
+   - Macro and weighted averages
+
+## Model Saving and Loading
+
+Models are saved with their configuration and weights, allowing them to be easily loaded for inference:
 
 ```python
-from src.models.utils import predict_image_from_path
+# Save model
+save_model(model, save_dir, class_names)
 
-# Predict the class of an image
-result = predict_image_from_path(
-    image_path='path/to/image.jpg',
-    model_dir='models/pokemon_card_classifier'
-)
-
-# Print the prediction
-print(f"Predicted class: {result['predicted_class']}")
-print(f"Confidence: {result['confidence']:.4f}")
+# Load model
+model, class_names = load_model(save_dir)
 ```
 
-### Evaluating the Model
+## Inference
 
-To evaluate the model on a dataset, you can use the `evaluate_model` function in `utils.py`:
+The model includes methods for inference on new images:
 
 ```python
-import torch
-from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
-from src.models.model import load_model, DeviceDataLoader
-from src.models.utils import evaluate_model
+# Predict from a file path
+result = predict_image(image_path, model, class_names)
 
-# Load the model
-model, class_names = load_model('models/pokemon_card_classifier')
-
-# Load the dataset
-val_dataset = datasets.ImageFolder(
-    'data/processed/val',
-    transform=transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
-)
-
-# Create the dataloader
-val_loader = DataLoader(
-    val_dataset,
-    batch_size=32,
-    shuffle=False,
-    num_workers=4,
-    pin_memory=True
-)
-
-# Wrap the dataloader to move data to the device
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-val_loader = DeviceDataLoader(val_loader, device)
-
-# Evaluate the model
-results = evaluate_model(model, val_loader, device)
-
-# Print the results
-print(f"Accuracy: {results['accuracy']:.4f}")
+# Predict from a PIL Image
+result = model.predict(image, class_names)
 ```
 
-## Model Outputs
+The prediction result includes:
 
-After training, the model will save the following files in the specified save directory:
+- The predicted class
+- Confidence score
+- Top 5 predictions with probabilities
 
-- `pokemon_card_classifier.pth`: The trained model weights
-- `class_names.json`: The class names
-- `loss.png`: Plot of the training and validation loss
-- `accuracy.png`: Plot of the training and validation accuracy
-- `confusion_matrix.png`: Confusion matrix
-- `classification_report.json`: Classification report with precision, recall, and F1-score for each class
+## Performance Considerations
+
+For best performance:
+
+1. Use the improved training script with:
+
+   - EfficientNet-B0 or ConvNeXt Tiny for a good balance of accuracy and speed
+   - Focal Loss for handling class imbalance
+   - Cosine Annealing scheduler for better convergence
+
+2. Train with GPU acceleration:
+
+   ```bash
+   python train_improved_model.py --model_type efficientnet_b0 --use_focal_loss --use_gpu
+   ```
+
+3. For deployment, consider:
+   - Using a smaller model like EfficientNet-B0 for faster inference
+   - Quantizing the model for reduced memory footprint
+   - Batch processing for multiple images
