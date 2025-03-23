@@ -3,14 +3,12 @@
  * Enhances user experience with subtle animations and feedback
  */
 
-// DOM Elements
-let dropArea;
+// Animation variables
 let uploadIcon;
-let previewImage;
-let classifyBtn;
 let resultCard;
 let predictionBars;
-let exampleCards;
+// Note: We're using DOM elements already defined in main.js
+// (dropArea, previewImage, classifyBtn, exampleCards)
 
 // Animation Constants
 const ANIMATION_DURATION = 300; // in milliseconds
@@ -21,12 +19,9 @@ const STAGGER_DELAY = 50; // in milliseconds
  */
 function initAnimations() {
     // Get DOM elements
-    dropArea = document.getElementById('drop-area');
     uploadIcon = document.querySelector('.upload-icon i');
-    previewImage = document.getElementById('preview-image');
-    classifyBtn = document.getElementById('classify-btn');
     resultCard = document.querySelector('.result-card');
-    exampleCards = document.querySelectorAll('.example-card');
+    // We're using DOM elements already defined in main.js
     
     // Add event listeners
     addHoverAnimations();
