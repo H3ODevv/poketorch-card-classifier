@@ -47,6 +47,11 @@ data/processed/
 *.tar
 *.gz
 
+# Allow specific example images
+!static/examples/alakazam.jpg
+!static/examples/blastoise.jpg
+!static/examples/chansey.jpg
+
 # Logs
 logs/
 *.log
