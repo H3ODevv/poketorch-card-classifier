@@ -243,6 +243,26 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- The Pokémon card dataset
+- The Pokémon card dataset by Priyam Choksi on Kaggle: [Pokemon Cards](https://www.kaggle.com/datasets/priyamchoksi/pokemon-cards)
 - PyTorch and torchvision for the deep learning framework
 - FastAPI for the API framework
+
+## Citation
+
+If you use this project or the dataset in your work, please cite:
+
+```
+Choksi, P. (2023). Pokemon Cards [Dataset]. Kaggle. https://www.kaggle.com/datasets/priyamchoksi/pokemon-cards
+```
+
+BibTeX:
+
+```bibtex
+@misc{choksi2023pokemoncards,
+  author = {Priyam Choksi},
+  title = {Pokemon Cards},
+  year = {2023},
+  publisher = {Kaggle},
+  howpublished = {\url{https://www.kaggle.com/datasets/priyamchoksi/pokemon-cards}}
+}
+```
